@@ -98,9 +98,7 @@ namespace MobileApplicationBackend.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.Event' is null.");
             }
-
-            var res = await _context.Event.ToListAsync();
-            @event.Id = res.Count + 1;
+            
             _context.Event.Add(@event);
             await _context.SaveChangesAsync();
             

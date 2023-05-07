@@ -98,9 +98,7 @@ namespace MobileApplicationBackend.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.Workout' is null.");
             }
-
-            var res = await _context.Workout.ToListAsync();
-            workout.Id = res.Count + 1;
+            
             _context.Workout.Add(workout);
             await _context.SaveChangesAsync();
             

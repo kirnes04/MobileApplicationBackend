@@ -93,9 +93,7 @@ namespace MobileApplicationBackend.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.News' is null.");
             }
-
-            var res = await _context.News.ToListAsync();
-            news.Id = res.Count + 1;
+            
             _context.News.Add(news);
             await _context.SaveChangesAsync();
             

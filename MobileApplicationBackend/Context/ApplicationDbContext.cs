@@ -23,4 +23,6 @@ public class ApplicationDbContext : DbContext
     public DbSet<MobileApplicationBackend.Models.User>? User { get; set; }
     
     public DbSet<MobileApplicationBackend.Models.TournamentParticipants>? TournamentParticipants { get; set; }
+    
+    public DbSet<MobileApplicationBackend.Models.Feedback>? Feedback { get; set; }
 }

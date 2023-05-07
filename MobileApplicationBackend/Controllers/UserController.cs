@@ -111,9 +111,8 @@ namespace MobileApplicationBackend.Controllers
           {
               return Problem("Entity set 'ApplicationDbContext.User'  is null.");
           }
-
-          user.Id = 0;
-            _context.User.Add(user);
+          
+          _context.User.Add(user);
             await _context.SaveChangesAsync();
             return CreatedAtAction("GetUser", new { id = user.Id }, user);
         }

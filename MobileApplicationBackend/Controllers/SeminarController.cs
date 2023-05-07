@@ -98,9 +98,7 @@ namespace MobileApplicationBackend.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.Seminar' is null.");
             }
-
-            var res = await _context.Seminar.ToListAsync();
-            seminar.Id = res.Count + 1;
+            
             _context.Seminar.Add(seminar);
             await _context.SaveChangesAsync();
             

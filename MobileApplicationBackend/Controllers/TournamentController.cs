@@ -98,9 +98,7 @@ namespace MobileApplicationBackend.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.Tournament' is null.");
             }
-
-            var res = await _context.Tournament.ToListAsync();
-            tournament.Id = res.Count + 1;
+            
             _context.Tournament.Add(tournament);
             await _context.SaveChangesAsync();
             
