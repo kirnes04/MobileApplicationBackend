@@ -72,8 +72,8 @@ namespace MobileApplicationBackend.Controllers
         }
 
         // GET: api/User/5
-        [Authorize(Roles = "admin")]
         [HttpGet("{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
           if (_context.User == null)
@@ -103,7 +103,7 @@ namespace MobileApplicationBackend.Controllers
 
             if (user.Role == "admin")
             {
-                return Forbid("You can't change administrator");
+                return StatusCode(403,"You can't change administrator");
             }
 
             var pass = user.Password;
@@ -139,6 +139,11 @@ namespace MobileApplicationBackend.Controllers
           {
               return Problem("Entity set 'ApplicationDbContext.User'  is null.");
           }
+          var sameUser = _context.User.FirstOrDefault(o => o.Email == user.Email);
+          if (sameUser is not null)
+          {
+              return Conflict(new { message = $"User with the email '{user.Email}' already exists" });
+          }
           
           var pass = user.Password;
           var passHash = GetHash(pass);
@@ -159,9 +164,17 @@ namespace MobileApplicationBackend.Controllers
                 return NotFound();
             }
             var user = await _context.User.FindAsync(id);
+            
+            
+            
             if (user == null)
             {
                 return NotFound();
+            }
+            
+            if (user.Role == "admin")
+            {
+                return StatusCode(403,"You can't change administrator");
             }
 
             _context.User.Remove(user);
