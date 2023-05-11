@@ -39,13 +39,36 @@ namespace MobileApplicationBackend.Controllers
               return NotFound();
           }
 
-          var currentUser = GetCurrentUser();
-
           var result = await _context.User.ToListAsync();
             
           HttpContext.Response.Headers.Add("X-Total-Count", result.Count.ToString());
 
           return Ok(result);
+        }
+        
+        // Get: api/UserCoach
+        [HttpGet]
+        [Route("api/UserCoach")]
+        public async Task<ActionResult<IEnumerable<User>>> GetUserCoach()
+        {
+            if (_context.User == null)
+            {
+                return NotFound();
+            }
+
+            List<User> result = new List<User>();
+
+            foreach (User user in _context.User)
+            {
+                if (user.Role == "coach")
+                {
+                    result.Add(user);
+                }
+            }
+
+            HttpContext.Response.Headers.Add("X-Total-Count", result.Count.ToString());
+
+            return Ok(result);
         }
 
         // GET: api/User/5
