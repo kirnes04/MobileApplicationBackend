@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,7 @@ namespace MobileApplicationBackend.Controllers
 
         // GET: api/Feedback
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<IEnumerable<Feedback>>> GetFeedback()
         {
           if (_context.Feedback == null)
@@ -39,6 +41,7 @@ namespace MobileApplicationBackend.Controllers
 
         // GET: api/Feedback/5
         [HttpGet("{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<Feedback>> GetFeedback(int id)
         {
           if (_context.Feedback == null)
@@ -58,6 +61,7 @@ namespace MobileApplicationBackend.Controllers
         // PUT: api/Feedback/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> PutFeedback(int id, Feedback feedback)
         {
             if (id != feedback.Id)
@@ -103,6 +107,7 @@ namespace MobileApplicationBackend.Controllers
 
         // DELETE: api/Feedback/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteFeedback(int id)
         {
             if (_context.Feedback == null)

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,7 @@ namespace MobileApplicationBackend.Controllers
 
         // GET: api/TrialForm
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<IEnumerable<TrialForm>>> GetTrialForm()
         {
           if (_context.TrialForm == null)
@@ -39,6 +41,7 @@ namespace MobileApplicationBackend.Controllers
 
         // GET: api/TrialForm/5
         [HttpGet("{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<TrialForm>> GetTrialForm(int id)
         {
           if (_context.TrialForm == null)
@@ -58,6 +61,7 @@ namespace MobileApplicationBackend.Controllers
         // PUT: api/TrialForm/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> PutTrialForm(int id, TrialForm trialForm)
         {
             if (id != trialForm.Id)
@@ -103,6 +107,7 @@ namespace MobileApplicationBackend.Controllers
 
         // DELETE: api/TrialForm/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteTrialForm(int id)
         {
             if (_context.TrialForm == null)
