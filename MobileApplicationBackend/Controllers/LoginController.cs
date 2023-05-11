@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Security;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
@@ -74,15 +75,28 @@ namespace MobileApplicationBackend.Controllers
 
         private User Authenticate(UserLogin userLogin)
         {
-            var role = userLogin.Role.ToLower();
-            var currentUser = _context.User.FirstOrDefault(o => o.Email.ToLower() ==
-                userLogin.Email.ToLower() && o.Password == userLogin.Password);
+            User currentUser = null;
+            foreach (User user in _context.User)
+            {
+                if (user.Email.ToLower() == userLogin.Email.ToLower() && user.Password == GetHash(userLogin.Password))
+                {
+                    currentUser = user;
+                }
+            }
             if (currentUser != null)
             {
                 return currentUser;
             }
 
             return null;
+        }
+        
+        private static string GetHash(string password)
+        {
+            MD5 md5 = new MD5CryptoServiceProvider();
+            byte[] checkSum = md5.ComputeHash(Encoding.UTF8.GetBytes(password));
+            string result = BitConverter.ToString(checkSum).Replace("-", String.Empty);
+            return result;
         }
     }
 }

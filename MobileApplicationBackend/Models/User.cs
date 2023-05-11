@@ -16,7 +16,7 @@ public class User
     public string Email { get; init; }
     
     [Column("password")]
-    public string Password { get; init; }
+    public string Password { get; set; }
     
     [Column("role")]
     public string Role { get; init; }

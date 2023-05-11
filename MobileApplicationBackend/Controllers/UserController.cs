@@ -11,6 +11,8 @@ using MobileApplicationBackend.Context;
 using MobileApplicationBackend.Models;
 using System.Drawing;
 using System.Net;
+using System.Security.Cryptography;
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 
@@ -80,6 +82,9 @@ namespace MobileApplicationBackend.Controllers
             {
                 return Forbid("You can't change administrator");
             }
+
+            var pass = user.Password;
+            user.Password = GetHash(pass);
             _context.Entry(user).State = EntityState.Modified;
 
             try
@@ -111,6 +116,10 @@ namespace MobileApplicationBackend.Controllers
           {
               return Problem("Entity set 'ApplicationDbContext.User'  is null.");
           }
+          
+          var pass = user.Password;
+          var passHash = GetHash(pass);
+          user.Password = passHash;
           
           _context.User.Add(user);
             await _context.SaveChangesAsync();
@@ -160,6 +169,14 @@ namespace MobileApplicationBackend.Controllers
             }
 
             return null;
+        }
+
+        private static string GetHash(string password)
+        {
+            MD5 md5 = new MD5CryptoServiceProvider();
+            byte[] checkSum = md5.ComputeHash(Encoding.UTF8.GetBytes(password));
+            string result = BitConverter.ToString(checkSum).Replace("-", String.Empty);
+            return result;
         }
     }
 }
